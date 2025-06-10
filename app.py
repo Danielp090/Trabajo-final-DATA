@@ -16,7 +16,7 @@ if st.session_state.toggle_age_filter:
     st.write(f"Datos filtrados por edad entre {min_edad} y {max_edad}:")
     st.write(df_filt.head())
 #Matriz de correlación
-st.toggle("Mostrar Matriz de Correlación", key="toggle_corr_matrix")
+st.toggle("Matriz de Correlación", key="toggle_corr_matrix")
 if st.session_state.toggle_corr_matrix:
     st.subheader("Matriz de Correlación")
     fig_corr = px.imshow(correlation_matrix, text_auto=True, aspect="auto")
@@ -25,7 +25,7 @@ if st.session_state.toggle_corr_matrix:
     if st.session_state.toggle_corr_summary:
         st.write("La matriz muestra que las presiones arteriales sistólica y diastólica están moderadamente correlacionadas positivamente. Otras relaciones, como entre la frecuencia cardíaca y la presión diastólica, o entre la edad y la troponina, son más débiles. Muchas de las variables presentan correlaciones muy bajas entre sí, indicando poca relación lineal directa.")
 # Gráficos de dispersión
-st.toggle("Mostrar Gráficos de Dispersión", key="toggle_scatter_plots")
+st.toggle("Gráficos de Dispersión", key="toggle_scatter_plots")
 if st.session_state.toggle_scatter_plots:
     st.subheader("Gráficos de Dispersión")
     fig1 = px.scatter(df_filtrado, x="Edad", y="Frecuencia cardiaca", title="Frecuencia Cardiaca vs Edad")
@@ -50,7 +50,7 @@ if st.session_state.toggle_scatter_plots:
     st.plotly_chart(fig6)
     st.write("La gráfica muestra una amplia dispersión de los niveles de azúcar en sangre (mayormente entre 50 y más de 250 mg/dL) frente a un extenso rango de valores de presión arterial diastólica (principalmente entre 50-100 mmHg). No se observa una correlación lineal fuerte o evidente entre estas dos variables. La característica principal es la considerable variabilidad de los niveles de azúcar en sangre para cualquier nivel de presión arterial diastólica dado (y viceversa), lo que sugiere una relación lineal débil o inexistente entre estos dos factores en el conjunto de datos.")
 #Pruebas de normalidad
-st.toggle("Mostrar Pruebas de Normalidad", key="toggle_normality_tests")
+st.toggle("Pruebas de Normalidad", key="toggle_normality_tests")
 if st.session_state.toggle_normality_tests:
     st.subheader("Pruebas de Normalidad")
     resultados_pruebas_normalidad = pruebas_normalidad(df_filtrado)
@@ -58,7 +58,7 @@ if st.session_state.toggle_normality_tests:
     st.write(resultados_df)
     st.write("Los resultados de la prueba de normalidad muestran que la mayoría de las variables no siguen una distribución normal, con valores p generalmente inferiores a 0.05, lo que indica que se rechaza la hipótesis nula de normalidad para estas variables.")
 #Pruebas de Pearson
-st.toggle("Mostrar Pruebas de Pearson", key="toggle_pearson_test")
+st.toggle("Pruebas de Pearson", key="toggle_pearson_test")
 if st.session_state.toggle_pearson_test:
     #Prueba Pearson entre Edad y Frecuencia Cardiaca
     st.subheader("Prueba de Pearson entre Edad y Frecuencia Cardiaca")
@@ -66,7 +66,7 @@ if st.session_state.toggle_pearson_test:
     df_filtrado['Rango Edad'] = (df_filtrado['Edad'] // 10) * 10
     df_filtrado = df_filtrado[df_filtrado['Rango Edad'] < 100]  
     df_filtrado = df_filtrado[df_filtrado['Frecuencia cardiaca'] > 0]
-    figcajas = px.box(df_filtrado, x='Rango Edad', y='Frecuencia cardiaca', title='Boxplot de Frecuencia Cardiaca por Rango de Edad')
+    figcajas = px.box(df_filtrado, x='Rango Edad', y='Frecuencia cardiaca', title='Frecuencia Cardiaca por Rango de Edad')
     st.plotly_chart(figcajas)
     corr, p_value = prueba_pearson(df_filtrado, 'Rango Edad', 'Frecuencia cardiaca')
     st.write(f"Coeficiente de correlación de Pearson: {corr}, Valor p: {p_value}")
@@ -78,7 +78,7 @@ if st.session_state.toggle_pearson_test:
     #Grafica de vilones
     df_filtrado['Edad'] = df_filtrado['Edad'].astype(int)  # Asegurar de que la columna Edad sea de tipo entero
     df_filtrado['Rango Edad'] = (df_filtrado['Edad'] // 10) * 10
-    figviolines = px.violin(df_filtrado, x='Rango Edad', y='Azucar en sangre', title='Violin Plot de Azúcar en Sangre por Rango de Edad')
+    figviolines = px.violin(df_filtrado, x='Rango Edad', y='Azucar en sangre', title='Azúcar en Sangre por Rango de Edad')
     st.plotly_chart(figviolines)
     corr, p_value = prueba_pearson(df_filtrado, 'Rango Edad', 'Azucar en sangre')
     st.write(f"Coeficiente de correlación de Pearson: {corr}, Valor p: {p_value}")
@@ -98,7 +98,7 @@ if st.session_state.toggle_pearson_test:
     else:
         st.write("No existe una correlación significativa entre la presión arterial sistólica y diastólica.")
 #Prueba Chi2 de género y resultado
-st.toggle("Mostrar Prueba Chi2", key="toggle_chi2_test")
+st.toggle("Prueba Chi2", key="toggle_chi2_test")
 if st.session_state.toggle_chi2_test:
     st.subheader("Prueba Chi2 entre Género y Resultado")
     #Grafica distribución del género y resultado
@@ -113,7 +113,7 @@ if st.session_state.toggle_chi2_test:
     else:
         st.write("No existe una asociación significativa entre el género y el resultado.")
 #Prueba ANOVA de edad y presión arterial sistólica y diastólica y azúcar en sangre
-st.toggle("Mostrar Prueba ANOVA", key="toggle_anova_test")
+st.toggle("Pruebas ANOVA", key="toggle_anova_test")
 if st.session_state.toggle_anova_test:
     st.subheader("Prueba ANOVA entre Edad y Presión Arterial")
     anova_stat, anova_p_value = prueba_anova(df_filtrado, 'Rango Edad', 'Presion arterial sistolica')
@@ -144,7 +144,7 @@ if st.session_state.toggle_anova_test:
     else:
         st.write("No existe una diferencia significativa entre los géneros en relación a la frecuencia cardiaca.")
 #Conclusiones
-st.toggle("Mostrar Conclusiones", key="toggle_conclusions")
+st.toggle("Conclusiones", key="toggle_conclusions")
 if st.session_state.toggle_conclusions:
     st.subheader("Conclusiones")
     st.write("Basándonos en las pruebas y visualizaciones que hemos discutido, se puede concluir que el estudio general sugiere un panorama complejo de interacciones. Si bien múltiples variables fisiológicas continuas examinadas, como la relación entre los niveles de azúcar en sangre y la edad, la frecuencia cardíaca con el azúcar en sangre, o el azúcar en sangre con las diferentes presiones arteriales, no presentaron consistentemente correlaciones lineales fuertes entre sí –indicando una limitada interdependencia directa al analizar estos pares específicos–, esto no disminuye su relevancia individual. De hecho, esta falta de correlaciones directas pronunciadas entre muchos parámetros continuos contrasta notablemente con hallazgos específicos del estudio, como la asociación significativa que se encontró entre el género y el resultado, lo que subraya que variables de diferente naturaleza (en este caso, una categórica como el género) pueden tener una influencia más determinante o un papel explicativo crucial en el resultado final investigado, destacando la importancia de un análisis multifactorial.")
