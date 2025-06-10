@@ -57,11 +57,11 @@ if st.session_state.toggle_normality_tests:
     resultados_df = pd.DataFrame(resultados_pruebas_normalidad).T
     st.write(resultados_df)
     st.write("Los resultados de la prueba de normalidad muestran que la mayoría de las variables no siguen una distribución normal, con valores p generalmente inferiores a 0.05, lo que indica que se rechaza la hipótesis nula de normalidad para estas variables.")
-#Prueba de Pearson de edad y frecuencia cardiaca
-st.toggle("Mostrar Prueba de Pearson", key="toggle_pearson_test")
+#Pruebas de Pearson
+st.toggle("Mostrar Pruebas de Pearson", key="toggle_pearson_test")
 if st.session_state.toggle_pearson_test:
+    #Prueba Pearson entre Edad y Frecuencia Cardiaca
     st.subheader("Prueba de Pearson entre Edad y Frecuencia Cardiaca")
-    #Grafica de cajas con edades de 10 en 10
     df_filtrado['Edad'] = df_filtrado['Edad'].astype(int)  
     df_filtrado['Rango Edad'] = (df_filtrado['Edad'] // 10) * 10
     df_filtrado = df_filtrado[df_filtrado['Rango Edad'] < 100]  
@@ -75,7 +75,7 @@ if st.session_state.toggle_pearson_test:
     else:
         st.write("No existe una correlación significativa entre la edad y la frecuencia cardiaca.")
     st.subheader("Prueba de Pearson entre Edad y Azúcar en Sangre")
-    #Grafica de violines en rango de edades de 10 en 10
+    #Grafica de vilones
     df_filtrado['Edad'] = df_filtrado['Edad'].astype(int)  # Asegurar de que la columna Edad sea de tipo entero
     df_filtrado['Rango Edad'] = (df_filtrado['Edad'] // 10) * 10
     figviolines = px.violin(df_filtrado, x='Rango Edad', y='Azucar en sangre', title='Violin Plot de Azúcar en Sangre por Rango de Edad')
@@ -88,6 +88,9 @@ if st.session_state.toggle_pearson_test:
         st.write("No existe una correlación significativa entre la edad y el azúcar en sangre.")
     #Prueba pearson de presion arterial sistólica y diastólica
     st.subheader("Prueba de Pearson entre Presión Arterial Sistolica y Diastolica")
+    #grafico scatter
+    fig_presion = px.scatter(df_filtrado, x='Presion arterial sistolica', y='Presion arterial diastolica', title='Presión Arterial Sistolica vs Diastolica')
+    st.plotly_chart(fig_presion)
     corr, p_value = prueba_pearson(df_filtrado, 'Presion arterial sistolica', 'Presion arterial diastolica')
     st.write(f"Coeficiente de correlación de Pearson: {corr}, Valor p: {p_value}")
     if p_value < 0.05:
@@ -99,8 +102,8 @@ st.toggle("Mostrar Prueba Chi2", key="toggle_chi2_test")
 if st.session_state.toggle_chi2_test:
     st.subheader("Prueba Chi2 entre Género y Resultado")
     #Grafica distribución del género y resultado
-    df['Genero'] = df['Genero'].astype('category')  # Asegurarse de que la columna Género sea de tipo categórico
-    df['Resultado'] = df['Resultado'].astype('category')  # Asegurarse de que la columna Resultado sea de tipo categórico
+    df['Genero'] = df['Genero'].astype('category')  
+    df['Resultado'] = df['Resultado'].astype('category')  #Se hace la columna de tipo categorico para estar poder hacer el grafdico
     fig_gen_result = px.histogram(df, x='Genero', color='Resultado', barmode='group', title='Distribución de Género y Resultado')
     st.plotly_chart(fig_gen_result)
     chi2_stat, p_value = prueba_chi2(df, 'Genero', 'Resultado')
@@ -140,7 +143,7 @@ if st.session_state.toggle_anova_test:
         st.write("Existe una diferencia significativa entre los géneros en relación a la frecuencia cardiaca.")
     else:
         st.write("No existe una diferencia significativa entre los géneros en relación a la frecuencia cardiaca.")
-#Sacar conclusiones si todos los toggles están activados
+#Conclusiones
 st.toggle("Mostrar Conclusiones", key="toggle_conclusions")
 if st.session_state.toggle_conclusions:
     st.subheader("Conclusiones")

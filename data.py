@@ -47,12 +47,12 @@ def pruebas_normalidad(data):
         resultados[column] = {'Estadístico': stat, 'valor p': p_value}
     return resultados
 resultados_pruebas_normalidad = pruebas_normalidad(df_filtrado)
-#Prueba pearson de dos variables
+#Prueba pearson
 def prueba_pearson(data, var1, var2):
     from scipy.stats import pearsonr
     corr, p_value = pearsonr(data[var1], data[var2])
     return corr, p_value
-#Prueba chi2 de dos varuables
+#Prueba chi2
 def prueba_chi2(data, var1, var2):
     from scipy.stats import chi2_contingency
     contingency_table = pd.crosstab(data[var1], data[var2])
@@ -64,3 +64,5 @@ def prueba_anova(data, var1, var2):
     groups = [group[var2].values for name, group in data.groupby(var1)]
     stat, p_value = f_oneway(*groups)
     return stat, p_value
+#Se prodcedio a crear funciones de las pruebas para que al momento de hacer en el archivo app.py sea mas facil y rapido solo llamando las columnas necesaria
+
