@@ -76,7 +76,7 @@ if st.session_state.toggle_pearson_test:
         st.write("No existe una correlación significativa entre la edad y la frecuencia cardiaca.")
     st.subheader("Prueba de Pearson entre Edad y Azúcar en Sangre")
     #Grafica de violines en rango de edades de 10 en 10
-    df_filtrado['Edad'] = df_filtrado['Edad'].astype(int)  # Asegurarse de que la columna Edad sea de tipo entero
+    df_filtrado['Edad'] = df_filtrado['Edad'].astype(int)  # Asegurar de que la columna Edad sea de tipo entero
     df_filtrado['Rango Edad'] = (df_filtrado['Edad'] // 10) * 10
     figviolines = px.violin(df_filtrado, x='Rango Edad', y='Azucar en sangre', title='Violin Plot de Azúcar en Sangre por Rango de Edad')
     st.plotly_chart(figviolines)
@@ -86,6 +86,14 @@ if st.session_state.toggle_pearson_test:
         st.write("Existe una correlación significativa entre la edad y el azúcar en sangre.")
     else:
         st.write("No existe una correlación significativa entre la edad y el azúcar en sangre.")
+    #Prueba pearson de presion arterial sistólica y diastólica
+    st.subheader("Prueba de Pearson entre Presión Arterial Sistolica y Diastolica")
+    corr, p_value = prueba_pearson(df_filtrado, 'Presion arterial sistolica', 'Presion arterial diastolica')
+    st.write(f"Coeficiente de correlación de Pearson: {corr}, Valor p: {p_value}")
+    if p_value < 0.05:
+        st.write("Existe una correlación significativa entre la presión arterial sistólica y diastólica.")
+    else:
+        st.write("No existe una correlación significativa entre la presión arterial sistólica y diastólica.")
 #Prueba Chi2 de género y resultado
 st.toggle("Mostrar Prueba Chi2", key="toggle_chi2_test")
 if st.session_state.toggle_chi2_test:
